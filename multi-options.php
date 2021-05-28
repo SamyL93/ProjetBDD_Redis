@@ -1,7 +1,5 @@
 <?php
-// Start the session
-    session_start();
-    $_SESSION["user"] = uniqid();
+    require "config.php";
 ?>
 
 <!DOCTYPE html>
@@ -25,7 +23,7 @@
     </div>
 
     <div id="multiplayer">
-        <a href="#" class="link-menu">
+        <a href="join-room.php" class="link-menu">
             <p>Rejoindre une partie</p>
         </a>
     </div>

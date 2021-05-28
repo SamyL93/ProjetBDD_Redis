@@ -1,7 +1,5 @@
 <?php
-// Start the session
-    session_start();
-    $_SESSION["user"] = uniqid();
+    require "config.php";
 ?>
 
 <!DOCTYPE html>
@@ -18,7 +16,7 @@
 <body>
     <div class="container">
         <h2>Crée une salle</h2>
-        <form action="game-multi.php" name="create">
+        <form action="game-multi.php" method="POST" >
             <div class="form-group">
                 <label for="roomName">Salle:</label>
                 <input type="text" class="form-control" id="roomName" placeholder="Nom de salle" name="roomName">
@@ -27,7 +25,7 @@
                 <label for="players">Nombre de Joueurs:</label>
                 <input type="number" class="form-control" id="numPlayers" name="players">
             </div>
-            <button type="submit" class="btn btn-default">Crée</button>
+            <button type="submit" class="btn btn-default" name="create">Crée</button>
         </form>
     </div>
 </body>

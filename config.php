@@ -17,10 +17,19 @@ catch (Exception $e) {
 }
 
 session_start();
-if(!$redis->exists("user")){
-    $_SESSION["user"] = uniqid();
-    $redis->set("user", $_SESSION["user"]);
+$userUniq = uniqid();
+
+if(!isset($_SESSION["user"])){
+
+    $_SESSION["user"] = $userUniq;
+    $_SESSION["userName"] = $_SESSION["user"];
+
+    $redis->set("userId".$userUniq, $_SESSION["user"]);
+    $redis->set("userName".$userUniq, $_SESSION["user"]);
+
 }
 else{
-    $_SESSION["user"] = $redis->get("user");
+
+    $_SESSION["user"] = $redis->get("userId".$_SESSION["user"]);
+
 }

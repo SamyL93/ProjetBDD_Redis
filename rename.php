@@ -28,7 +28,7 @@
 
         <div class="pseudo-box">Votre pseudo est: 
             <?php 
-                echo $_SESSION["user"]
+                echo $_SESSION["userName"]
             ?>
         </div>
     </div>

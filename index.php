@@ -2,8 +2,8 @@
 // Start the session
     require "config.php";
     if(isset($_POST["nickname"])){
-        $_SESSION["user"] = $_POST["nicknameField"];
-        $redis->set("user", $_SESSION["user"]);
+        $_SESSION["userName"] = $_POST["nicknameField"];
+        $redis->set("userName".$_SESSION["user"], $_SESSION["userName"]);
     }
 ?>
 
@@ -41,7 +41,7 @@
         <!-- <div id="circle"></div> -->
         <div class="pseudo-box">Votre pseudo est: 
             <?php 
-                echo $_SESSION["user"]
+                echo $_SESSION["userName"]
             ?>
         </div>
     </div>
