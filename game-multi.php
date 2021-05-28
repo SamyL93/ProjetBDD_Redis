@@ -4,6 +4,16 @@ require_once 'pendu.php';
 
 require "config.php";
 
+session_start();
+
+$roomName = $redis->get('room');
+$creator = $redis->get('creator');
+$user = $_SESSION["user"];
+
+if($creator == $user){
+  echo "Mots a choisir: ";
+}
+
 // mise à jour de la valeur
 $redis->set('Mot_a_trouver', 'TEST');
 
@@ -96,11 +106,11 @@ function killPlayer($word) {
 <!DOCTYPE html>
 <html>
  <head>
-	<title>Le Pendu</title>
+	<title>Hangman</title>
   </head>
   <body>
-	<h1>Tu as perdue :(</h1>
-	<p>Le mot que vous cherchez est : <em>$word</em>.</p>
+	<h1>You lost!</h1>
+	<p>The word you were trying to guess was <em>$word</em>.</p>
   </body>
 </html>
 ENDPAGE;
@@ -111,11 +121,11 @@ function congratulateWinner($word) {
 <!DOCTYPE html>
 <html>
   <head>
-	<title>Le Pendue</title>
+	<title>Hangman</title>
   </head>
   <body>
-	<h1>Tu as gangner!</h1>
-	<p>Bravo! Le mots étais donc bien : <em>$word</em>.</p>
+	<h1>You win!</h1>
+	<p>Congratulations! You guessed that the word was <em>$word</em>.</p>
   </body>
 </html>
 ENDPAGE;

@@ -255,3 +255,19 @@ body {
   top:0px;
   
 }
+
+.link-menu{
+  text-decoration: none;
+  color:orange;
+}
+
+.pseudo-box{
+  height: 50px;
+  width: 400px;
+  background: #006680;
+  bottom: 360px;
+  font-size: 30px;
+  text-align: center;
+  font-family: shadows into light;
+  color: orange;
+}

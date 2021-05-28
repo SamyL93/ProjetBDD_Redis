@@ -1,7 +1,10 @@
 <?php
 // Start the session
-    session_start();
-    $_SESSION["user"] = uniqid();
+    require "config.php";
+    if(isset($_POST["nickname"])){
+        $_SESSION["user"] = $_POST["nicknameField"];
+        $redis->set("user", $_SESSION["user"]);
+    }
 ?>
 
 <!DOCTYPE html>
@@ -14,22 +17,35 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <div id="allthethings">
-    <div id="left"></div>
+        <div id="left"></div>
 
-    <div id="single">
-        <a href="game.php">
-            <p>Solo</p>
-        </a>
+        <div id="single">
+            <a href="game.php" class="link-menu">
+                <p>Solo</p>
+            </a>
+        </div>
+
+        <div id="multiplayer">
+            <a href="multi-options.php" class="link-menu">
+                <p>Multijouer</p>
+            </a>
+        </div>
+        <div id="options">
+            <a href="rename.php" class="link-menu">
+                <p>Pseudo</p>
+            </a>
+        </div>
+        <div id="right"></div>
+        <!-- <div id="exit"></div> -->
+        <!-- <div id="circle"></div> -->
+        <div class="pseudo-box">Votre pseudo est: 
+            <?php 
+                echo $_SESSION["user"]
+            ?>
+        </div>
     </div>
 
-    <div id="multiplayer"><p>Multijouer</p></div>
-    <div id="options"><p>Pseudo</p></div>
-    <div id="right"></div>
-    <div id="exit"></div>
-    <div id="circle"></div>
-    </div>
     
 </body>
 
