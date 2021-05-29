@@ -5,17 +5,40 @@ require_once 'pendu.php';
 require "config.php";
 
 if(isset($_POST["create"])) {
+  $roomId = uniqid();
   $roomName = $_POST["roomName"];
   $players = $_POST["players"];
   $creator = $_SESSION["user"];
+  $allplayers = [$creator];
 
-  if($redis->exists("salle")){
-    $salles = $redis->lrange("salle", 0, -1);
-    if(!in_array($creator, $salles)){
-      $redis->lpush('salle', $creator);
-      $redis->lpush('salleNom', $roomName);
-      $redis->lpush('salleJoueur', $players);
-      $redis->lpush('salleJoueurCurr', 1);
+  $salle = [
+    "id" => $roomId,  
+    "name" => $roomName,  
+    "creator"  => $creator,
+    "maxPlayers" => $players,
+    "currPlayers" =>count($allplayers),
+    "players" => $allplayers,
+  ];
+
+  if($redis->exists("salles")){
+    
+    $rooms = $redis->lrange("salles", 0, -1);
+
+    $alreadyExist = false;
+
+    for ($i=0; $i < count($rooms); $i++) { 
+      
+      $salle = json_decode($rooms[$i], true);
+      
+      if($salle["id"] == $roomId){
+        $alreadyExist = true;
+        break;
+      }
+
+    }
+
+    if(!$alreadyExist){
+      $redis->lpush('salles', json_encode($salle));
     }
     else{
       echo '<script>window.location.href = "create-room.php";</script>';
@@ -23,36 +46,35 @@ if(isset($_POST["create"])) {
     }
   }
   else{
-    $redis->lpush('salle', $creator);
-    $redis->lpush('salleNom', $roomName);
-    $redis->lpush('salleJoueur', $players);
-    $redis->lpush('salleJoueurCurr', 1);  
+    $redis->lpush('salles', json_encode($salle));
   }
 }
 elseif(isset($_POST["join"])) {
-
-  $idRoom = $_POST["idRoom"];
-  $rooms = $redis->lrange("salle", 0, -1);
+  $roomId = $_POST["idRoom"];
+  $rooms = $redis->lrange("salles", 0, -1);
+  
+  $currRoom = null;
   $index = null;
-
+  
   for ($i=0; $i < count($rooms); $i++) { 
-    if($rooms[$i] == $idRoom){
+    $room = json_decode($rooms[$i], true);
+    
+    if($room["id"] == $roomId){
+      $currRoom = $room;
       $index = $i;
+      break;
     }
   }
-  if(is_null($index)){
-      echo '<script>window.location.href = "join-room.php";</script>';
-      exit();
-  }
-  $currRoomName = $redis->lindex("salleNom", $index);
-  $currPlayersMax = $redis->lindex("salleJoueur", $index);
-  $currPlayers = $redis->lindex("salleJoueurCurr", $index);
-
-  if($currPlayers >= $currPlayersMax){
+  
+  if(is_null($currRoom)){
     echo '<script>window.location.href = "join-room.php";</script>';
     exit();
   }
   
+  array_push($currRoom["players"], $user["id"]);
+  $currRoom["currPlayers"] += 1; 
+  
+  $redis->lset('salles', $index, json_encode($currRoom));
 }
 
 // mise à jour de la valeur

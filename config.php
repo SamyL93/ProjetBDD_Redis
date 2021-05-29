@@ -22,14 +22,18 @@ $userUniq = uniqid();
 if(!isset($_SESSION["user"])){
 
     $_SESSION["user"] = $userUniq;
-    $_SESSION["userName"] = $_SESSION["user"];
+    
+    $user = [
+        "id"=>$userUniq,
+        "name"=>$userUniq
+    ];
 
-    $redis->set("userId".$userUniq, $_SESSION["user"]);
-    $redis->set("userName".$userUniq, $_SESSION["user"]);
-
+    $redis->set("user".$userUniq,json_encode($user));
 }
 else{
 
-    $_SESSION["user"] = $redis->get("userId".$_SESSION["user"]);
+    $user = json_decode($redis->get("user".$_SESSION["user"]), true);
+
+    $_SESSION["user"] = $user["id"];
 
 }

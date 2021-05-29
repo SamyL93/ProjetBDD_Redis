@@ -14,22 +14,27 @@
 <body>
 
     <div id="allthethings">
-    <div id="left"></div>
+        <div id="left"></div>
 
-    <div id="single">
-        <a href="create-room.php" class="link-menu">
-            <p>Crée une partie</p>
-        </a>
-    </div>
+        <div id="single">
+            <a href="create-room.php" class="link-menu">
+                <p>Crée une partie</p>
+            </a>
+        </div>
 
-    <div id="multiplayer">
-        <a href="join-room.php" class="link-menu">
-            <p>Rejoindre une partie</p>
-        </a>
-    </div>
-    <div id="right"></div>
-    <!-- <div id="exit"></div> -->
-    <!-- <div id="circle"></div> -->
+        <div id="multiplayer">
+            <a href="join-room.php" class="link-menu">
+                <p>Rejoindre une partie</p>
+            </a>
+        </div>
+        <div id="right"></div>
+
+        <div class="pseudo-box">Votre pseudo est: 
+            <?php 
+                echo $user["name"]
+            ?>
+        </div>
+        
     </div>
     
 </body>

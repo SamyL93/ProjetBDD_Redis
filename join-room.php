@@ -31,21 +31,25 @@
             </thead>
             <tbody>
                 <?php
-                if($redis->exists("salle")){
-                    $rooms = $redis->lrange("salle", 0, -1);
-                    $roomNames = $redis->lrange("salleNom", 0, -1);
-                    $roomPlayers = $redis->lrange("salleJoueur", 0, -1);
-                    $salleJoueurCurr = $redis->lrange("salleJoueurCurr", 0, -1);
-                    for ($i=0; $i < count($rooms); $i++) { 
-                        echo "<tr>";
-                        echo "<td>$rooms[$i]</td>";
-                        echo "<td>$roomNames[$i]</td>";
-                        echo "<td>$salleJoueurCurr[$i]/$roomPlayers[$i]</td>";
-                        if($salleJoueurCurr[$i] < $roomPlayers[$i]){
+                if($redis->exists("salles")){
+
+                    $rooms = $redis->lrange("salles", 0, -1);
+
+                    for ($i=0; $i < count($rooms); $i++) {
+                        $room = json_decode($rooms[$i], true);
+
+                        echo '
+                        <tr>
+                            <td>'.$room["id"].'</td>
+                            <td>'.$room["name"].'</td>
+                            <td>'.$room["currPlayers"].'/'.$room["maxPlayers"].'</td>
+                        '; 
+                        
+                        if($room["currPlayers"] < $room["maxPlayers"]){
                             echo 
                             '<td>
-                                <form action="game-multi.php">
-                                    <input type="hidden" value='.$rooms[$i].' name="idRoom">
+                                <form action="game-multi.php" method="POST">
+                                    <input type="hidden" value='.$room["id"].' name="idRoom">
                                     <button type="submit" name="join" class="btn btn-primary">
                                         Rejoindre
                                     </button>
@@ -60,13 +64,13 @@
                     }
                 }
                 else{
-                    echo `
+                    echo' 
                         <tr>
                             <td>-</td>
                             <td>-</td>
                             <td>-</td>
                         </tr>
-                    `;
+                    ';
                 }
                 ?>
             </tbody>
