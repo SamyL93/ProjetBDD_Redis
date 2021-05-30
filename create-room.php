@@ -25,6 +25,10 @@
                 <label for="players">Nombre de Joueurs:</label>
                 <input type="number" class="form-control" id="numPlayers" name="players">
             </div>
+            <div class="form-group">
+                <label for="word">Mot a deviner:</label>
+                <input type="text" class="form-control" id="word" name="word">
+            </div>
             <button type="submit" class="btn btn-default" name="create">Crée</button>
         </form>
     </div>

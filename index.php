@@ -42,7 +42,7 @@
         <!-- <div id="circle"></div> -->
         <div class="pseudo-box">Votre pseudo est: 
             <?php 
-                echo $user["name"]
+                echo $user["name"];
             ?>
         </div>
     </div>
